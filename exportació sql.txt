@@ -1,0 +1,586 @@
+CREATE SCHEMA IF NOT EXISTS `Planes` DEFAULT CHARACTER SET utf8 ;
+USE `Planes` ;
+
+-- -----------------------------------------------------
+-- Table `Planes`.`Plane`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Planes`.`Plane` (
+  `idPlane` INT NOT NULL,
+  `capacity` INT NULL,
+  `model` VARCHAR(45) NULL,
+  PRIMARY KEY (`idPlane`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Planes`.`Seat`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Planes`.`Seat` (
+  `idSeat` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `Plane_idPlane` INT NOT NULL,
+  PRIMARY KEY (`idSeat`, `Plane_idPlane`),
+  CONSTRAINT `fk_Seat_Plane`
+    FOREIGN KEY (`Plane_idPlane`)
+    REFERENCES `Planes`.`Plane` (`idPlane`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+INSERT INTO `planes`.`plane` (`capacity`, `model`) VALUES ('100', 'model1');
+INSERT INTO `planes`.`seat` (`idSeat`, `name`, `Plane_idPlane`) VALUES ('1', 't1', '0');
+
+
+
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema PictureShop
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema PictureShop
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `PictureShop` DEFAULT CHARACTER SET utf8 ;
+USE `PictureShop` ;
+
+-- -----------------------------------------------------
+-- Table `PictureShop`.`Author`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PictureShop`.`Author` (
+  `idAuthor` INT NOT NULL,
+  `name` VARCHAR(100) NULL,
+  PRIMARY KEY (`idAuthor`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PictureShop`.`Picture`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PictureShop`.`Picture` (
+  `idPicture` INT NOT NULL,
+  `prize` DECIMAL(10) NULL,
+  `buyerId` INT NULL,
+  `Author_idAuthor` INT NOT NULL,
+  PRIMARY KEY (`idPicture`),
+ CONSTRAINT `fk_Picture_Author1`
+    FOREIGN KEY (`Author_idAuthor`)
+    REFERENCES `PictureShop`.`Author` (`idAuthor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `PictureShop`.`Buyer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `PictureShop`.`Buyer` (
+  `idBuyer` INT NOT NULL,
+  `name` VARCHAR(45) NULL,
+  `surname` VARCHAR(45) NULL,
+  `dni` VARCHAR(15) NULL,
+  `Picture_idPicture` INT NOT NULL,
+  CONSTRAINT `fk_Buyer_Picture`
+    FOREIGN KEY (`Picture_idPicture`)
+    REFERENCES `PictureShop`.`Picture` (`idPicture`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO `pictureshop`.`author` (`idAuthor`, `name`) VALUES ('1', 'name1');
+INSERT INTO `pictureshop`.`picture` (`idPicture`, `prize`, `Author_idAuthor`) VALUES ('1', '1000', '1');
+insert into buyer (name, surname, dni, picture_idpicture) values ('name1', 'surname', '33344455', 1)
+UPDATE `pictureshop`.`picture` SET `buyerId` = '1' WHERE (`idPicture` = '1');
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema Stube
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Stube
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Stube` DEFAULT CHARACTER SET utf8 ;
+USE `Stube` ;
+
+-- -----------------------------------------------------
+-- Table `Stube`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Stube`.`User` (
+  `idUser` INT NOT NULL,
+  `email` VARCHAR(45) NULL,
+  `password` VARCHAR(45) NULL,
+  PRIMARY KEY (`idUser`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Stube`.`Video`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Stube`.`Video` (
+  `idVideo` INT NOT NULL,
+  `title` VARCHAR(45) NULL,
+  `description` VARCHAR(45) NULL,
+  `url` VARCHAR(100) NULL,
+  `identifier` VARCHAR(45) NULL,
+  `User_idUser` INT NOT NULL,
+  PRIMARY KEY (`idVideo`),
+  INDEX `fk_Video_User_idx` (`User_idUser` ASC) VISIBLE,
+  CONSTRAINT `fk_Video_User`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `Stube`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT INTO `stube`.`user` (`idUser`, `email`, `password`) VALUES ('1', 'uno@video.com', 'eeee');
+INSERT INTO `stube`.`video` (`idVideo`, `title`, `description`, `url`, `identifier`, `User_idUser`) VALUES ('1', 'vid1', 'video1', 'www.a.com', 'eee-wwe', '1');
+
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema Amazon
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Amazon
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Amazon` DEFAULT CHARACTER SET utf8 ;
+USE `Amazon` ;
+
+-- -----------------------------------------------------
+-- Table `Amazon`.`Author`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Amazon`.`Author` (
+  `idAuthor` INT NOT NULL,
+  `adress` VARCHAR(100) NOT NULL,
+  `onlyABook` TINYINT NOT NULL,
+  PRIMARY KEY (`idAuthor`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Amazon`.`Book`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Amazon`.`Book` (
+  `idBook` INT NOT NULL,
+  `description` VARCHAR(45) NULL,
+  `prize` DECIMAL(3,2) NOT NULL,
+  `units` INT NOT NULL,
+  `Author_idAuthor` INT NOT NULL,
+  PRIMARY KEY (`idBook`, `Author_idAuthor`),
+  CONSTRAINT `fk_Book_Author`
+    FOREIGN KEY (`Author_idAuthor`)
+    REFERENCES `Amazon`.`Author` (`idAuthor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Amazon`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Amazon`.`User` (
+  `idUser` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idUser`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Amazon`.`Invoice`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Amazon`.`Invoice` (
+  `idInvoice` INT NOT NULL,
+  `User_idUser` INT NOT NULL,
+  PRIMARY KEY (`idInvoice`, `User_idUser`),
+  CONSTRAINT `fk_Invoice_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `Amazon`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Amazon`.`InvoiceBooks`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Amazon`.`InvoiceBooks` (
+  `idInvoiceBooks` INT NOT NULL,
+  `Invoice_idInvoice` INT NOT NULL,
+  `Invoice_User_idUser` INT NOT NULL,
+  PRIMARY KEY (`idInvoiceBooks`, `Invoice_idInvoice`, `Invoice_User_idUser`),
+  CONSTRAINT `fk_InvoiceBooks_Invoice1`
+    FOREIGN KEY (`Invoice_idInvoice` , `Invoice_User_idUser`)
+    REFERENCES `Amazon`.`Invoice` (`idInvoice` , `User_idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT INTO `amazon`.`author` (`idAuthor`, `adress`, `onlyABook`) VALUES ('1', 'space, 1', '0');
+INSERT INTO `amazon`.`book` (`idBook`, `description`, `prize`, `units`, `Author_idAuthor`) VALUES ('1', 'book1', '100', '3', '1');
+INSERT INTO `amazon`.`user` (`idUser`, `name`, `password`) VALUES ('1', 'user1', 'pass1');
+INSERT INTO `amazon`.`invoice` (`idInvoice`, `User_idUser`) VALUES ('1', '1');
+INSERT INTO `amazon`.`invoicebooks` (`idInvoiceBooks`, `Invoice_idInvoice`, `Invoice_User_idUser`) VALUES ('1', '1', '1');
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema XarxaSocial
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema XarxaSocial
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `XarxaSocial` DEFAULT CHARACTER SET utf8 ;
+USE `XarxaSocial` ;
+
+-- -----------------------------------------------------
+-- Table `XarxaSocial`.`User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `XarxaSocial`.`User` (
+  `idUser` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `eMail` VARCHAR(100) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idUser`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `XarxaSocial`.`Friend`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `XarxaSocial`.`Friend` (
+  `idFriend` INT NOT NULL,
+  `User_idUser1` INT NOT NULL,
+  `User_idUser2` INT NOT NULL,
+  `meetDescription` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`idFriend`, `User_idUser1`, `User_idUser2`),
+  CONSTRAINT `fk_Friend_User1`
+    FOREIGN KEY (`User_idUser1`)
+    REFERENCES `XarxaSocial`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Friend_User2`
+    FOREIGN KEY (`User_idUser2`)
+    REFERENCES `XarxaSocial`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `XarxaSocial`.`Photo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `XarxaSocial`.`Photo` (
+  `idPhoto` INT NOT NULL,
+  `address` VARCHAR(100) NOT NULL,
+  `url` VARCHAR(100) NOT NULL,
+  `User_idUser` INT NOT NULL,
+  PRIMARY KEY (`idPhoto`, `User_idUser`),
+  CONSTRAINT `fk_Photo_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `XarxaSocial`.`User` (`idUser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT INTO `xarxasocial`.`user` (`idUser`, `name`, `eMail`, `password`) VALUES ('1', 'name1', 'a@a.com', 'pass1');
+INSERT INTO `xarxasocial`.`user` (`idUser`, `name`, `eMail`, `password`) VALUES ('2', 'name2', 'b@b.com', 'pass2');
+INSERT INTO `xarxasocial`.`friend` (`idFriend`, `User_idUser1`, `User_idUser2`, `meetDescription`) VALUES ('1', '1', '2', 'friendship');
+INSERT INTO `xarxasocial`.`photo` (`idPhoto`, `address`, `url`, `User_idUser`) VALUES ('1', 'pluton', 'www.a.com', '1');
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema Glasses
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Glasses
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Glasses` DEFAULT CHARACTER SET utf8 ;
+USE `Glasses` ;
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Customer` (
+  `idCustomer` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `phoneNumber` VARCHAR(10) NULL,
+  `postalCode` VARCHAR(10) NULL,
+  `faxNumber` VARCHAR(10) NULL,
+  `nif` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`idCustomer`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Company`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Company` (
+  `idCompany` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idCompany`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Frame`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Frame` (
+  `idFrame` INT NOT NULL,
+  `description` VARCHAR(45) NULL,
+  PRIMARY KEY (`idFrame`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Glass`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Glass` (
+  `idGlass` INT NOT NULL,
+  `graduation` VARCHAR(10) NULL,
+  `frameColour` VARCHAR(45) NULL,
+  `glassColour` VARCHAR(45) NULL,
+  `prize` DECIMAL(3,2) NULL,
+  `Customer_idCustomer` INT NOT NULL,
+  `Company_idCompany` INT NOT NULL,
+  `Frame_idFrame` INT NOT NULL,
+  PRIMARY KEY (`idGlass`, `Customer_idCustomer`, `Company_idCompany`, `Frame_idFrame`),
+  CONSTRAINT `fk_Glass_Customer1`
+    FOREIGN KEY (`Customer_idCustomer`)
+    REFERENCES `Glasses`.`Customer` (`idCustomer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Glass_Company1`
+    FOREIGN KEY (`Company_idCompany`)
+    REFERENCES `Glasses`.`Company` (`idCompany`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Glass_Frame1`
+    FOREIGN KEY (`Frame_idFrame`)
+    REFERENCES `Glasses`.`Frame` (`idFrame`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema Glasses
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema Glasses
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Glasses` DEFAULT CHARACTER SET utf8 ;
+USE `Glasses` ;
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Customer` (
+  `idCustomer` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(45) NOT NULL,
+  `city` VARCHAR(45) NOT NULL,
+  `phoneNumber` VARCHAR(10) NULL,
+  `postalCode` VARCHAR(10) NULL,
+  `faxNumber` VARCHAR(10) NULL,
+  `nif` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`idCustomer`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Company`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Company` (
+  `idCompany` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idCompany`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Frame`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Frame` (
+  `idFrame` INT NOT NULL,
+  `description` VARCHAR(45) NULL,
+  PRIMARY KEY (`idFrame`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Glass`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Glass` (
+  `idGlass` INT NOT NULL,
+  `graduation` VARCHAR(10) NULL,
+  `frameColour` VARCHAR(45) NULL,
+  `glassColour` VARCHAR(45) NULL,
+  `prize` DECIMAL(5,2) NULL,
+  `Customer_idCustomer` INT NOT NULL,
+  `Company_idCompany` INT NOT NULL,
+  `Frame_idFrame` INT NOT NULL,
+  PRIMARY KEY (`idGlass`, `Customer_idCustomer`, `Company_idCompany`, `Frame_idFrame`),
+  CONSTRAINT `fk_Glass_Customer1`
+    FOREIGN KEY (`Customer_idCustomer`)
+    REFERENCES `Glasses`.`Customer` (`idCustomer`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Glass_Company1`
+    FOREIGN KEY (`Company_idCompany`)
+    REFERENCES `Glasses`.`Company` (`idCompany`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Glass_Frame1`
+    FOREIGN KEY (`Frame_idFrame`)
+    REFERENCES `Glasses`.`Frame` (`idFrame`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Client`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Client` (
+  `idClient` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `address` VARCHAR(100) NOT NULL,
+  `phone` VARCHAR(10) NOT NULL,
+  `email` VARCHAR(100) NULL,
+  `record` DATE NULL,
+  `recommend` INT NULL,
+  `Client_idClient` NULL,
+  PRIMARY KEY (`idClient`),
+  INDEX `fk_Client_Client1_idx` (`Client_idClient` ASC) VISIBLE,
+  CONSTRAINT `fk_Client_Client1`
+    FOREIGN KEY (`Client_idClient`)
+    REFERENCES `Glasses`.`Client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`Employee`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`Employee` (
+  `idEmployee` INT NOT NULL,
+  `name` VARCHAR(100) NULL,
+  PRIMARY KEY (`idEmployee`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Glasses`.`GlassSold`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Glasses`.`GlassSold` (
+  `idGlassSold` INT NOT NULL,
+  `date` DATE NOT NULL,
+  `Employee_idEmployee` INT NOT NULL,
+  `Glass_idGlass` INT NOT NULL,
+  `Client_idClient` INT NOT NULL,
+  PRIMARY KEY (`idGlassSold`, `Employee_idEmployee`, `Glass_idGlass`, `Client_idClient`),
+  CONSTRAINT `fk_GlassSold_Employee1`
+    FOREIGN KEY (`Employee_idEmployee`)
+    REFERENCES `Glasses`.`Employee` (`idEmployee`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_GlassSold_Glass1`
+    FOREIGN KEY (`Glass_idGlass`)
+    REFERENCES `Glasses`.`Glass` (`idGlass`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_GlassSold_Client1`
+    FOREIGN KEY (`Client_idClient`)
+    REFERENCES `Glasses`.`Client` (`idClient`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+INSERT INTO `glasses`.`customer` (`idCustomer`, `name`, `address`, `city`, `phoneNumber`, `postalCode`, `nif`) VALUES ('1', 'cust1', 'poniente, 1', 'sant boi', '6665544', '08830', '46578873');
+INSERT INTO `glasses`.`company` (`idCompany`, `name`) VALUES ('1', 'company1');
+INSERT INTO `glasses`.`frame` (`idFrame`, `description`) VALUES ('1', 'flotant');
+INSERT INTO `glasses`.`frame` (`idFrame`, `description`) VALUES ('2', 'pasta');
+INSERT INTO `glasses`.`frame` (`idFrame`, `description`) VALUES ('3', 'metalica');
+INSERT INTO `glasses`.`client` (`idClient`, `name`, `address`, `phone`, `email`) VALUES ('1', 'client1', 'tarragona, 1', '6665533', 'a@a.com');
+INSERT INTO `glasses`.`glass` (`idGlass`, `graduation`, `frameColour`, `glassColour`, `prize`, `Customer_idCustomer`, `Company_idCompany`, `Frame_idFrame`) VALUES ('1', '1.0', 'rojo', 'verde', '10.10', '1', '1', '1');
+INSERT INTO `glasses`.`employee` (`idEmployee`, `name`) VALUES ('1', 'employee1');
+INSERT INTO `glasses`.`glasssold` (`idGlassSold`, `date`, `Employee_idEmployee`, `Glass_idGlass`, `Client_idClient`) VALUES ('1', '20201010', '1', '1', '1');
